@@ -1,0 +1,14 @@
+<?cpp
+	set @j,0
+	looper
+		echo "@{j}========================="
+		set @i,0
+		looper
+			echo "@{i}inner"
+			cmp @i,1
+			set @i,expr:@i+1
+			back next,next,looper
+		cmp @j,9
+		set @j,expr:@j+1
+		back next,next,looper	
+?>
