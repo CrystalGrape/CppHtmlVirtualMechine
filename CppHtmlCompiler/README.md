@@ -29,11 +29,13 @@ cpphtml 语言必须包含在<?cpp和?>中，否则翻译器不会解析
 表达式将被视为一个运算表达式。
 函数：  
 函数使用关键字function定义，以end结束。注意，函数结尾必须是end，否则不会返回，  
-还可能造成位置错误。例：  
+还可能造成位置错误。例：
+### 多行文本框  
 function example:  
 	set @a,100  
 	set @b,200  
 	set @c,expr:@a+@b  
 	end  
 函数使用call关键字调用  
+### 多行文本框
 call example  
