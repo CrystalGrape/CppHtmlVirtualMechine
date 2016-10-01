@@ -18,3 +18,22 @@ back 跳转命令 根据前一个比较的状态跳转到指定位置 使用方式：back mt,eq,lt
 cmp 比较命令 使用方式:cmp [@var,"str",num],[@var,"str",num]  
 echo 输出命令 使用方式:echo ["str",@var,"str@{var}"]  
 free 释放变量命令 使用方式:free @var  
+#cpphtml介绍
+cpphtml 语言必须包含在<?cpp和?>中，否则翻译器不会解析  
+定义一个变量:cpphtml没有变量类型，所有变量都是全局变量，全局可用  
+定义变量方式：  
+最简单的形式:set @a,10,定义了变量a，并初始化为10  
+变量初始化变量:set @b,@a,定义了变量b，并初始化为变量a的值  
+运算表达式：set @a,expr:@a+10,这个表达式既可以初始化变量，又可以对变量  
+的值进行修改，如上就是将a的值加10，在set第二个参数中如果是expr:开头，那个这个  
+表达式将被视为一个运算表达式。
+函数：  
+函数使用关键字function定义，以end结束。注意，函数结尾必须是end，否则不会返回，  
+还可能造成位置错误。例：  
+function example:
+	set @a,100
+	set @b,200
+	set @c,expr:@a+@b
+	end
+函数使用call关键字调用  
+call example
