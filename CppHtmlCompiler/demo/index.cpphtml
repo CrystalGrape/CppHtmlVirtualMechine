@@ -1,5 +1,6 @@
 <html>
 <?cpp
+	
 	if 10>1
 		echo "1"
 		if 20<10
@@ -10,5 +11,9 @@
 	else
 		echo "4"
 	fi
+	set @i,0
+	for @i,10,1
+		echo @i
+	rof
 ?>
 </html>
