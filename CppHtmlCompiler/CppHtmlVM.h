@@ -36,5 +36,6 @@ public:
 	std::CHCExpection Run();
 	static std::string& trim(std::string &s);
 	void ClearCommand();
+	void FreeResource();
 };
 

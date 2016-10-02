@@ -5,17 +5,17 @@ CHCExpection CommandMode();
 CHCExpection CompilerCH(string srcName);
 int main(int argc,char **argv)
 {
-	//if (argc == 1){
-	//	//命令行模式
-	//	CommandMode();
-	//}
-	//else{
-	//	//编译文件
-	//	string FileName = argv[1];
-	//	CompilerCH(FileName);
-	//}
-	string FileName = "demo/index.cpphtml";
-	CompilerCH(FileName);
+	if (argc == 1){
+		//命令行模式
+		CommandMode();
+	}
+	else{
+		//编译文件
+		string FileName = argv[1];
+		CompilerCH(FileName);
+	}
+	/*string FileName = "demo/index.cpphtml";
+	CompilerCH(FileName);*/
 	return 0;
 }
 
@@ -51,6 +51,7 @@ CHCExpection CompilerCH(string srcName)
 		}
 	}
 	srcfile.close();
+	chv.FreeResource();
 	return new CppHtmlCompilerExpection(Success);
 }
 
