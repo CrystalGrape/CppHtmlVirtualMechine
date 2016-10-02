@@ -7,7 +7,6 @@ static RunMode SysMode;						//运行模式
 static ExeContainer ExeList;				//指令集
 static VMState	vmState;					//虚拟机状态
 static StateMechine stateMechine[4];		//虚拟机状态处理
-static CHCExpection ChcLastError;			//虚拟机最后一个错误
 static FuncContainer FuncList;				//函数列表<代码区>
 static string LoadFuncName = "_entry";		//当前加载的函数名	
 static vector<ProgramCounter> SP;			//堆栈
@@ -26,6 +25,8 @@ CppHtmlVM::CppHtmlVM(RunMode runMode)
 	InitStateMechine();
 	InitExeContainer();
 }
+
+/*初始化状态机*/
 void CppHtmlVM::InitStateMechine()
 {
 	stateMechine[Load] = [](){
@@ -45,6 +46,17 @@ void CppHtmlVM::InitStateMechine()
 	};
 }
 
+/*释放所有资源*/
+void CppHtmlVM::FreeResource()
+{
+	ExeList.clear();
+	FuncList.clear();
+	LoadFuncName = "_entry";
+	SP.clear();
+	Variable.clear();
+}
+
+/*取出空格和制表符*/
 string& CppHtmlVM::trim(string &s)
 {
 	if (s.empty())
@@ -160,6 +172,7 @@ CHCExpection CppHtmlVM::Run()
 	return new CppHtmlCompilerExpection(Success);
 }
 
+/*根据一个算式计算*/
 string calculate(string code)
 {
 	string ret;
@@ -247,6 +260,7 @@ string calculate(string code)
 	return ret;
 }
 
+/*展开条件*/
 void explain(string &arg1, string &arg2, string &arg3)
 {
 	string mainstr = arg1;
@@ -272,6 +286,8 @@ void explain(string &arg1, string &arg2, string &arg3)
 			arg3 += mainstr.data()[i];
 	}
 }
+
+/*初始化指令集*/
 void CppHtmlVM::InitExeContainer()
 {
 	/*停机命令*/
