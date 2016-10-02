@@ -48,6 +48,43 @@ void CppHtmlVM::InitStateMechine()
 	};
 }
 
+string& CppHtmlVM::trim(string &s)
+{
+	if (s.empty())
+	{
+		return s;
+	}
+	size_t index;
+	if ((index = s.find_first_not_of("\t")) != string::npos)
+		s.erase(0, index);
+	if ((index = s.find_first_not_of(" ")) != string::npos)
+		s.erase(0, index);
+	if ((index = s.find_last_not_of("\t")) != string::npos)
+		s.erase(index + 1);
+	if ((index = s.find_last_not_of(" ")) != string::npos)
+		s.erase(index + 1);
+	return s;
+}
+
+/*加载模块文件*/
+CHCExpection CppHtmlVM::LoadCHM(string module)
+{
+	module += ".chmodule";
+	ifstream srcfile(module);
+	if (!srcfile.is_open()){
+		return new CppHtmlCompilerExpection(Failed, "can't open source file");
+	}
+	char line[8096];
+	while (!srcfile.eof()){
+		srcfile.getline(line, 8096);
+		string tmpLine = line;
+		trim(tmpLine);
+		LoadCodeLine(tmpLine);
+	}
+	srcfile.close();
+	return new CppHtmlCompilerExpection(Success);
+}
+
 /*加载代码*/
 CHCExpection CppHtmlVM::LoadCodeLine(std::string line)
 {
@@ -71,6 +108,10 @@ CHCExpection CppHtmlVM::LoadCodeLine(std::string line)
 	if (index == string::npos){
 		if (opcode == "function"){
 			LoadFuncName = rest.substr(0, rest.size() - 1);
+			return new CppHtmlCompilerExpection(Success);
+		}
+		if (opcode == "#import"){
+			delete LoadCHM(rest);
 			return new CppHtmlCompilerExpection(Success);
 		}
 		scl.SetCode(opcode, rest);

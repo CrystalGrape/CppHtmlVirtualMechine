@@ -22,8 +22,10 @@ public:
 	CppHtmlVM(RunMode runMode = File);
 	void InitStateMechine();
 	void InitExeContainer();
+	std::CHCExpection LoadCHM(std::string module);
 	std::CHCExpection LoadCodeLine(std::string line);
 	std::CHCExpection Run();
+	static std::string& trim(std::string &s);
 	void ClearCommand();
 };
 

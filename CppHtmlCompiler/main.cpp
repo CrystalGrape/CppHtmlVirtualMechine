@@ -5,37 +5,18 @@ CHCExpection CommandMode();
 CHCExpection CompilerCH(string srcName);
 int main(int argc,char **argv)
 {
-	if (argc == 1){
-		//命令行模式
-		CommandMode();
-	}
-	else
-	{
-		//编译文件
-		string FileName = argv[1];
-		CompilerCH(FileName);
-	}
-	/*string FileName = "index.cpphtml";
-	CompilerCH(FileName);*/
+	//if (argc == 1){
+	//	//命令行模式
+	//	CommandMode();
+	//}
+	//else{
+	//	//编译文件
+	//	string FileName = argv[1];
+	//	CompilerCH(FileName);
+	//}
+	string FileName = "index.cpphtml";
+	CompilerCH(FileName);
 	return 0;
-}
-
-string& trim(string &s)
-{
-	if (s.empty())
-	{
-		return s;
-	}
-	size_t index;
-	if ((index = s.find_first_not_of("\t")) != string::npos)
-		s.erase(0, index);
-	if ((index = s.find_first_not_of(" ")) != string::npos)
-		s.erase(0, index);
-	if ((index = s.find_last_not_of("\t")) != string::npos)
-		s.erase(index + 1);
-	if ((index = s.find_last_not_of(" ")) != string::npos)
-		s.erase(index + 1);
-	return s;
 }
 
 CHCExpection CompilerCH(string srcName)
@@ -46,9 +27,9 @@ CHCExpection CompilerCH(string srcName)
 		return new CppHtmlCompilerExpection(Failed, "can't open source file");
 	}
 	CppHtmlVM chv;
+	chv.LoadCHM("sysvar");
 	char line[8096];
 	bool isCpp = false;
-	ofstream cppfile;
 	while (!srcfile.eof()){
 		srcfile.getline(line, 8096);
 		string tmpLine = line;
@@ -58,7 +39,7 @@ CHCExpection CompilerCH(string srcName)
 				isCpp = false;
 			}
 			else{
-				trim(tmpLine);
+				CppHtmlVM::trim(tmpLine);
 				delete chv.LoadCodeLine(tmpLine);
 			}
 		}
@@ -82,7 +63,7 @@ CHCExpection CommandMode()
 		string cmd;
 		while ((ch = getchar())!='\n')
 			cmd += ch;
-		trim(cmd);
+		CppHtmlVM::trim(cmd);
 		delete chv.LoadCodeLine(cmd);
 		delete chv.Run();
 	}
