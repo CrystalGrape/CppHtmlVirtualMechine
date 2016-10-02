@@ -1,6 +1,7 @@
 #include "CppHtmlVM.h"
 #include <sstream>
 #include <regex>
+#include "json\json.h"
 using namespace std;
 static RunMode SysMode;						//运行模式
 static ExeContainer ExeList;				//指令集
@@ -18,6 +19,8 @@ static struct ProgramCounter
 static vector<ProgramCounter> SP;			//堆栈
 static map<string, string>  Variable;		//变量区 
 static char OverLoad;						//溢出标志位
+
+static Json::Value ViewBag;					//当前视图包
 /*初始化命令执行参数*/
 CppHtmlVM::CppHtmlVM(RunMode runMode)
 {
@@ -77,6 +80,11 @@ CHCExpection CppHtmlVM::LoadCodeLine(std::string line)
 	string arg1 = rest.substr(last, index - last);
 	rest = rest.substr(index + 1, rest.size());
 	index = rest.find_first_of(',', last);
+	if (opcode == "sysvar"){
+		scl.SetCode(opcode, arg1, rest);
+		FuncList[LoadFuncName].push_back(scl);
+		return new CppHtmlCompilerExpection(Success);
+	}
 	if (index == string::npos){
 		scl.SetCode(opcode, arg1, rest);
 		FuncList[LoadFuncName].push_back(scl);
@@ -384,5 +392,36 @@ void CppHtmlVM::InitExeContainer()
 		if (Variable.find(arg1) == Variable.end())
 			return;
 		Variable.erase(arg1);
+	};
+	/*系统变量设置*/
+	ExeList["sysvar"] = command(){
+		arg1 = arg1.substr(1, arg1.size());
+		Variable[arg1] = arg2;
+	};
+	/*设置当前视图*/
+	ExeList["setview"] = command()
+	{
+		Json::Reader reader;
+		if (arg1.data()[0] == '@'){
+			arg1 = Variable[arg1.substr(1, arg1.size())];
+		}
+		reader.parse(arg1, ViewBag);
+	};
+	/*读取当前视图*/
+	ExeList["readview"] = command()
+	{
+		arg1 = arg1.substr(1, arg1.size());
+		if (arg2.data()[0] == '@'){
+			arg2 = Variable[arg2.substr(1, arg2.size())];
+		}
+		if (arg3.data()[0] == '@'){
+			arg3 = Variable[arg3.substr(1, arg3.size())];
+		}
+		else{
+			arg3 = arg3.substr(1, arg3.size() - 2);
+		}
+
+		int index = atoi(arg2.data());
+		Variable[arg1] = ViewBag[index][arg3].asString();
 	};
 }

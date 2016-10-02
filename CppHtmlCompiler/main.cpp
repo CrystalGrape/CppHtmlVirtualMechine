@@ -15,6 +15,8 @@ int main(int argc,char **argv)
 		string FileName = argv[1];
 		CompilerCH(FileName);
 	}
+	/*string FileName = "index.cpphtml";
+	CompilerCH(FileName);*/
 	return 0;
 }
 
@@ -44,11 +46,11 @@ CHCExpection CompilerCH(string srcName)
 		return new CppHtmlCompilerExpection(Failed, "can't open source file");
 	}
 	CppHtmlVM chv;
-	char line[1000];
+	char line[8096];
 	bool isCpp = false;
 	ofstream cppfile;
 	while (!srcfile.eof()){
-		srcfile.getline(line, 1000);
+		srcfile.getline(line, 8096);
 		string tmpLine = line;
 		if (isCpp){
 			if (tmpLine.find("?>") != string::npos){
