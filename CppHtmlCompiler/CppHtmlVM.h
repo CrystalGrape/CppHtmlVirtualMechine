@@ -9,12 +9,21 @@ typedef enum
 	Stop,			//停止运行
 	Dump,			//出现错误崩溃
 }VMState;
-
 typedef enum
 {
 	Cmd,
 	File,
 }RunMode;
+
+typedef struct
+{
+	std::string function;
+	bool isLooper;
+	int line;
+	std::string step;
+	std::string var;
+}ProgramCounter;
+
 typedef std::CHCExpection (*StateMechine)();
 class CppHtmlVM
 {

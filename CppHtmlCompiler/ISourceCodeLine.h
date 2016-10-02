@@ -27,6 +27,26 @@ public:
 			return;
 		con[opcode](arg1, arg2, arg3);
 	}
+	bool IsFor()
+	{
+		return (opcode == "for") ? true : false;
+	}
+	bool IsRof()
+	{
+		return (opcode == "rof") ? true : false;
+	}
+	bool IsIf()
+	{
+		return (opcode == "if") ? true : false;
+	}
+	bool IsElse()
+	{
+		return (opcode == "else") ? true : false;
+	}
+	bool IsFi()
+	{
+		return (opcode == "fi") ? true : false;
+	}
 private:
 	std::string opcode;
 	std::string arg1;

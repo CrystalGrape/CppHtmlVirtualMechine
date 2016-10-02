@@ -10,17 +10,14 @@ static StateMechine stateMechine[4];		//虚拟机状态处理
 static CHCExpection ChcLastError;			//虚拟机最后一个错误
 static FuncContainer FuncList;				//函数列表<代码区>
 static string LoadFuncName = "_entry";		//当前加载的函数名	
-static struct ProgramCounter
-{
-	string function;
-	bool isLooper;
-	int line;
-}PC = { "_entry", false, 0 };				//程序计数器
 static vector<ProgramCounter> SP;			//堆栈
 static map<string, string>  Variable;		//变量区 
 static char OverLoad;						//溢出标志位
-
 static Json::Value ViewBag;					//当前视图包
+static ProgramCounter PC =
+{
+	"_entry", false, 0
+};											//程序计数器
 /*初始化命令执行参数*/
 CppHtmlVM::CppHtmlVM(RunMode runMode)
 {
@@ -250,6 +247,31 @@ string calculate(string code)
 	return ret;
 }
 
+void explain(string &arg1, string &arg2, string &arg3)
+{
+	string mainstr = arg1;
+	arg1.clear();
+	arg2.clear();
+	arg3.clear();
+	int index = 0;
+	for (int i = 0; i < (int)mainstr.size(); i++)
+	{
+		if (mainstr.data()[i] == ' ' || mainstr.data()[i] == '\t')
+			continue;
+		if (mainstr.data()[i] == '<' 
+			|| mainstr.data()[i] == '>' 
+			|| mainstr.data()[i] == '=')
+		{
+			index = 1;
+			arg2 += mainstr.data()[i];
+			continue;
+		}
+		if (index == 0)
+			arg1 += mainstr.data()[i];
+		else
+			arg3 += mainstr.data()[i];
+	}
+}
 void CppHtmlVM::InitExeContainer()
 {
 	/*停机命令*/
@@ -464,5 +486,137 @@ void CppHtmlVM::InitExeContainer()
 
 		int index = atoi(arg2.data());
 		Variable[arg1] = ViewBag[index][arg3].asString();
+	};
+
+	/*for循环*/
+	ExeList["for"] = command()
+	{
+		string var = arg1;
+		string step = arg3;
+		arg1 = Variable[arg1.substr(1, arg1.size())];
+		if (arg2.data()[0] == '@'){
+			arg2 = Variable[arg2.substr(1, arg2.size())];
+		}
+		if (arg3.data()[0] == '@'){
+			arg3 = Variable[arg3.substr(1, arg3.size())];
+		}
+		double nu1 = atof(arg1.data());
+		double nu2 = atof(arg2.data());
+		double nu3 = atof(arg3.data());
+		bool ret = (nu3 >= 0) ? (nu1 >= nu2) : (nu1 <= nu2);
+		if (!ret){
+			//继续循环
+			PC.isLooper = true;
+			PC.line -= 1;
+			PC.var = var;
+			PC.step = step;
+			SP.push_back(PC);
+			PC.var.clear();
+			PC.step.clear();
+			PC.isLooper = false;
+			PC.line += 1;
+		}
+		else{
+			//跳出循环，寻找下面的rof关键字
+			int state = 0;
+			for (int index = PC.line;; index++){
+				if (FuncList[PC.function][index].IsFor())
+					state++;
+				if (FuncList[PC.function][index].IsRof()){
+					if (state != 0){
+						state--;
+						continue;
+					}
+					PC.line = index + 1;
+					break;
+				}
+			}
+		}
+	};
+	ExeList["rof"] = command()
+	{
+		PC = SP.back();
+		SP.pop_back();
+		arg1 = Variable[PC.var.substr(1, PC.var.size())];
+		arg2 = PC.step;
+		if (arg2.data()[0] == '@'){
+			arg2 = Variable[arg2.substr(1, arg2.size())];
+		}
+		double nu1 = atof(arg1.data());
+		double nu2 = atof(arg2.data());
+		stringstream ss;
+		ss << (nu1 + nu2);
+		ss >> Variable[PC.var.substr(1, PC.var.size())];
+		PC.step.clear();
+		PC.var.clear();
+	};
+	ExeList["break"] = command()
+	{
+		for (int index = PC.line;; index++){
+			if (FuncList[PC.function][index].IsRof()){
+				PC.line = index + 1;
+				break;
+			}
+		}
+	};
+	ExeList["continue"] = command()
+	{
+		ExeList["rof"]("0", "0", "0");
+	};
+	ExeList["if"] = command()
+	{
+		explain(arg1, arg2, arg3);
+		if (arg1.data()[0] == '@'){
+			arg1 = Variable[arg1.substr(1, arg1.size())];
+		}
+		if (arg3.data()[0] == '@'){
+			arg3 = Variable[arg3.substr(1, arg3.size())];
+		}
+
+		ExeList["cmp"](arg1, arg3, "0");
+		bool ret = false;
+		if (OverLoad == -1 && (arg2 == "<" || arg2 == "<=")){
+			ret = true;
+		}
+		if (OverLoad == 0 && (arg2 == "==" || arg2 == "<=" || arg2 == ">=")){
+			ret = true;
+		}
+		if (OverLoad == 1 && (arg2 == ">" || arg2 == ">=")){
+			ret = true;
+		}
+		if (!ret){
+			//如果条件不满足，执行else后的语句
+			int state = 0;
+			for (int index = PC.line;; index++){
+				if (FuncList[PC.function][index].IsIf())
+					state++;
+				if (FuncList[PC.function][index].IsElse() && state != 0)
+					continue;
+				if (FuncList[PC.function][index].IsElse() && state == 0)
+				{
+					PC.line = index + 1;
+					break;
+				}
+				if (FuncList[PC.function][index].IsFi())
+				{
+					if (state != 0){
+						state--;
+						continue;
+					}
+					PC.line = index + 1;
+					break;
+				}
+			}
+		}
+	};
+	/*else语句*/
+	ExeList["else"] = command()
+	{
+		for (int index = PC.line;; index++){
+			if (FuncList[PC.function][index].IsFi()){
+				PC.line = index + 1;
+				break;
+			}
+		}
 	};
 }

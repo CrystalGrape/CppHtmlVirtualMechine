@@ -1,18 +1,14 @@
+<html>
 <?cpp
-	setview @a
-	set @index,0
-	looper
-		readview @name,@index,"name"
-		readview @age,@index,"age"
-		echo "@{index} @{name} @{age}"
-		set @index,expr:@index+1
-		cmp @index,2
-		back next,next,looper
-  set @arg1,100
-  set @arg2,200
-  call testfunc
-  echo @return
-  free @arg1
-  free @arg2
-  free @arg3
+	if 10>1
+		echo "1"
+		if 20<10
+			echo "2"
+		else
+			echo "3"
+		fi
+	else
+		echo "4"
+	fi
 ?>
+</html>
