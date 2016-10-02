@@ -83,8 +83,8 @@ cpphtml 语言必须包含在<?cpp和?>中，否则翻译器不会解析
 声明一个test模块，保存为test.chmodule  
 ### test.chmodule 
 		function testfunc:  
-		echo "this is test"  
-		set @return,expr:@arg1+@arg2  
+			echo "this is test"  
+			set @return,expr:@arg1+@arg2  
 		end  
 ### 引用时使用  
 		#import test  
