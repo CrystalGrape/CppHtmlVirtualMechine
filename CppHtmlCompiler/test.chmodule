@@ -1,4 +1,0 @@
-function testfunc:
-	echo "this is test"
-	set @return,expr:@arg1+@arg2
-	end
