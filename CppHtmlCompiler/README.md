@@ -18,6 +18,18 @@ CppHtmlVirtualMechine是一款基于C++的汇编风格的脚本语言
 		cmp 比较命令 使用方式:cmp [@var,"str",num],[@var,"str",num]  
 		echo 输出命令 使用方式:echo ["str",@var,"str@{var}"]  
 		free 释放变量命令 使用方式:free @var  
+		###1.0新加入特性
+		#import 模块导入  
+		sysvar 设置视图变量  
+		setview 选择视图  
+		readview 读取视图  
+		if 条件控制  
+		else 条件转折  
+		fi 条件控制块结束  
+		for 循环  
+		rof 循环结束  
+		break 跳出循环  
+		continue 重新循环  
 #cpphtml介绍
 cpphtml 语言必须包含在<?cpp和?>中，否则翻译器不会解析  
 定义一个变量:cpphtml没有变量类型，所有变量都是全局变量，全局可用  
@@ -61,3 +73,58 @@ cpphtml 语言必须包含在<?cpp和?>中，否则翻译器不会解析
 				back next,next,looper
 			set @j,expr:@j+1
 			back next,next,looper
+# 版本1.0  
+###版本说明  
+增加一系列新特性：引用模块、视图变量、for循环、if条件判断  
+### 引用模块  
+增加了模块引用特性，利用关键字#import导入需要引用的模块，模块保存在一后缀名  
+为chmodule的文件中，模块的声明不需要包含在<?cpp和?>块中。  
+声明一个test模块，保存为test.chmodule  
+		function testfunc:  
+		echo "this is test"  
+		set @return,expr:@arg1+@arg2  
+		end  
+引用时使用  
+		#import test  
+当解释器加载代码过程中遇到这段代码会自动在当前目录查找到test.chmodule文件，并加载进  
+当前文件中。
+### 视图变量  
+视图变量是一个json数组，一般用于控制器向视图传递模型参数，相关命令有三个sysvar、setview、  
+readview。  
+sysvar用于声明并赋值一个视图变量  
+setview用于选择接下来要使用的视图变量  
+readview用于读取视图中的数据第一个参数存放结果，第二个参数是数组下标，第三个数组用于指定  
+需要读取的字段名  
+例：  
+		sysvar @a,[{"name":"aaaa","age":21},{"name":"bbb","age":22}]  
+		setview @a  
+		readview @name,@index,"name"  
+### if条件控制  
+例子：  
+		if 10>1  
+			echo "1"  
+			if 20<10  
+				echo "2"  
+			else  
+				echo "3"  
+			fi  
+		else  
+			echo "4"  
+		fi  
+上述代码是一个if嵌套
+### for循环控制
+目前for循环不支持复杂判断，for循环参数有三个：  
+参数一：索引变量  
+参数二：退出条件  
+参数三：步长  
+例子：
+		for @i,10,1
+			echo @i
+			if @i>5
+				continue
+			else
+				break
+			fi
+		rof
+上述代码，先判断变量i是否等于10，等于退出循环，不等于进入循环。  
+每次循环结束i加一  
