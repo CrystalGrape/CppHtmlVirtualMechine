@@ -3,7 +3,8 @@ CppHtmlVirtualMechine是一款基于C++的汇编风格的脚本语言
 在VS2013中编译，生成CppHtmlCompiler.exe的可执行文件,本    
 程序有两种执行方式，命令行模式和脚本模式  
 ##命令行模式  
-可以直接运行CppHtmlCompiler.exe,便可以开始输入命令，如  
+可以直接运行CppHtmlCompiler.exe,便可以开始输入命令  
+### 如 
 		echo "Hello World!"  
 ##脚本模式  
 通过命令行传入参数的方式执行cpphtml格式的脚本  
@@ -80,11 +81,12 @@ cpphtml 语言必须包含在<?cpp和?>中，否则翻译器不会解析
 增加了模块引用特性，利用关键字#import导入需要引用的模块，模块保存在一后缀名  
 为chmodule的文件中，模块的声明不需要包含在<?cpp和?>块中。  
 声明一个test模块，保存为test.chmodule  
+### test.chmodule 
 		function testfunc:  
 		echo "this is test"  
 		set @return,expr:@arg1+@arg2  
 		end  
-引用时使用  
+### 引用时使用  
 		#import test  
 当解释器加载代码过程中遇到这段代码会自动在当前目录查找到test.chmodule文件，并加载进  
 当前文件中。
@@ -95,12 +97,11 @@ sysvar用于声明并赋值一个视图变量
 setview用于选择接下来要使用的视图变量  
 readview用于读取视图中的数据第一个参数存放结果，第二个参数是数组下标，第三个数组用于指定  
 需要读取的字段名  
-例：  
+### 例：  
 		sysvar @a,[{"name":"aaaa","age":21},{"name":"bbb","age":22}]  
 		setview @a  
 		readview @name,@index,"name"  
-### if条件控制  
-例子：  
+### if条件控制    
 		if 10>1  
 			echo "1"  
 			if 20<10  
@@ -117,7 +118,7 @@ readview用于读取视图中的数据第一个参数存放结果，第二个参数是数组下标，第三个数组
 参数一：索引变量  
 参数二：退出条件  
 参数三：步长  
-例子：
+### 例子：
 		for @i,10,1
 			echo @i
 			if @i>5
