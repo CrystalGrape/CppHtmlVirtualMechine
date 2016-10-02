@@ -3,20 +3,33 @@
 #include <regex>
 #include "json\json.h"
 using namespace std;
-static RunMode SysMode;						//运行模式
-static ExeContainer ExeList;				//指令集
-static VMState	vmState;					//虚拟机状态
-static StateMechine stateMechine[4];		//虚拟机状态处理
-static FuncContainer FuncList;				//函数列表<代码区>
-static string LoadFuncName = "_entry";		//当前加载的函数名	
-static vector<ProgramCounter> SP;			//堆栈
-static map<string, string>  Variable;		//变量区 
-static char OverLoad;						//溢出标志位
-static Json::Value ViewBag;					//当前视图包
+//运行模式
+static RunMode SysMode;	
+//指令集
+static ExeContainer ExeList;
+//虚拟机状态
+static VMState	vmState;	
+//虚拟机状态处理
+static StateMechine stateMechine[4];	
+//函数列表<代码区>
+static FuncContainer FuncList;	
+//当前加载的函数名	
+static string LoadFuncName = "_entry";	
+//堆栈
+static vector<ProgramCounter> SP;	
+//变量区 
+static map<string, string>  Variable;		
+//局部变量区
+static map<string, map<string, string>> LocalVariable;	
+//溢出标志位
+static char OverLoad;		
+//当前视图包
+static Json::Value ViewBag;		
+//程序计数器
 static ProgramCounter PC =
 {
 	"_entry", false, 0
-};											//程序计数器
+};											
 /*初始化命令执行参数*/
 CppHtmlVM::CppHtmlVM(RunMode runMode)
 {
@@ -54,6 +67,7 @@ void CppHtmlVM::FreeResource()
 	LoadFuncName = "_entry";
 	SP.clear();
 	Variable.clear();
+	LocalVariable.clear();
 }
 
 /*取出空格和制表符*/
@@ -287,6 +301,21 @@ void explain(string &arg1, string &arg2, string &arg3)
 	}
 }
 
+string GetVar(string var)
+{
+	if (LocalVariable[PC.function].find(var) != LocalVariable[PC.function].end())
+		return LocalVariable[PC.function][var];
+	else
+		return Variable[var];
+}
+
+void SetVar(string var, string value)
+{
+	if (LocalVariable[PC.function].find(var) != LocalVariable[PC.function].end())
+		LocalVariable[PC.function][var] = value;
+	else
+		Variable[var] = value;
+}
 /*初始化指令集*/
 void CppHtmlVM::InitExeContainer()
 {
@@ -301,7 +330,7 @@ void CppHtmlVM::InitExeContainer()
 	{
 		arg1 = arg1.substr(1, arg1.size());
 		if (arg2.data()[0] == '@'){
-			arg2 = Variable[arg2.substr(1, arg2.size())];
+			arg2 = GetVar(arg2.substr(1, arg2.size()));
 		}
 		if (arg2.data()[0] == 'e'
 			&&arg2.data()[1] == 'x'
@@ -320,7 +349,7 @@ void CppHtmlVM::InitExeContainer()
 							|| arg2.data()[j] == '*'
 							|| arg2.data()[j] == '/'
 							|| arg2.data()[j] == '%' || j == arg2.size()){
-							expr += Variable[var];
+							expr += GetVar(var);
 							expr += arg2.data()[j];
 							i = j;
 							break;
@@ -336,6 +365,46 @@ void CppHtmlVM::InitExeContainer()
 		Variable[arg1] = arg2;
 	};
 
+	/*局部变量声明*/
+	ExeList["local"] = command()
+	{
+		arg1 = arg1.substr(1, arg1.size());
+		if (arg2.data()[0] == '@'){
+			arg2 = GetVar(arg2.substr(1, arg2.size()));
+		}
+		if (arg2.data()[0] == 'e'
+			&&arg2.data()[1] == 'x'
+			&&arg2.data()[2] == 'p'
+			&&arg2.data()[3] == 'r'
+			&&arg2.data()[4] == ':')
+		{
+			arg2 = arg2.substr(5, arg2.size());
+			string expr;
+			for (int i = 0; i < (int)arg2.size(); i++){
+				if (arg2.data()[i] == '@'){
+					string var;
+					for (int j = i + 1;; j++){
+						if (arg2.data()[j] == '+'
+							|| arg2.data()[j] == '-'
+							|| arg2.data()[j] == '*'
+							|| arg2.data()[j] == '/'
+							|| arg2.data()[j] == '%' || j == arg2.size()){
+							expr += GetVar(var);
+							expr += arg2.data()[j];
+							i = j;
+							break;
+						}
+						var += arg2.data()[j];
+					}
+				}
+				else
+					expr += arg2[i];
+			}
+			arg2 = calculate(expr);
+		}
+		LocalVariable[PC.function][arg1] = arg2;
+	};
+
 	/*函数调用命令*/
 	ExeList["call"] = command()
 	{
@@ -349,6 +418,8 @@ void CppHtmlVM::InitExeContainer()
 	/*函数结束命令*/
 	ExeList["end"] = command()
 	{
+		//清除局部变量
+		LocalVariable[PC.function].clear();
 		PC = SP.back();
 		SP.pop_back();
 	};
@@ -399,10 +470,10 @@ void CppHtmlVM::InitExeContainer()
 	ExeList["cmp"] = command()
 	{
 		if (arg1.data()[0] == '@'){
-			arg1 = Variable[arg1.substr(1, arg1.size())];
+			arg1 = GetVar(arg1.substr(1, arg1.size()));
 		}
 		if (arg2.data()[0] == '@'){
-			arg2 = Variable[arg2.substr(1, arg2.size())];
+			arg2 = GetVar(arg2.substr(1, arg2.size()));
 		}
 
 		//验证是数字还是字符串
@@ -433,7 +504,7 @@ void CppHtmlVM::InitExeContainer()
 	ExeList["echo"] = command()
 	{
 		if (arg1.data()[0] == '@'){
-			arg1 = Variable[arg1.substr(1, arg1.size())];
+			arg1 = GetVar(arg1.substr(1, arg1.size()));
 		}
 		if (arg1.data()[0] == '"'&&arg1.data()[arg1.size() - 1] == '"'){
 			arg1 = arg1.substr(1, arg1.size() - 2);
@@ -443,7 +514,7 @@ void CppHtmlVM::InitExeContainer()
 					string var;
 					for (int j = i + 2;; j++){
 						if (arg1.data()[j] == '}' || j == arg2.size()){
-							string res = Variable[var];
+							string res = GetVar(var);
 							if (res.data()[0] == '\"'&&res.data()[res.size() - 1] == '\"')
 							{
 								res = res.substr(1, res.size() - 2);
@@ -468,9 +539,12 @@ void CppHtmlVM::InitExeContainer()
 		if (arg1.data()[0] != '@')
 			return;
 		arg1 = arg1.substr(1, arg1.size());
-		if (Variable.find(arg1) == Variable.end())
+		if (LocalVariable[PC.function].find(arg1) != LocalVariable[PC.function].end()){
+			LocalVariable[PC.function].erase(arg1);
 			return;
-		Variable.erase(arg1);
+		}
+		if (Variable.find(arg1) != Variable.end())
+			Variable.erase(arg1);
 	};
 	/*系统变量设置*/
 	ExeList["sysvar"] = command(){
@@ -482,7 +556,7 @@ void CppHtmlVM::InitExeContainer()
 	{
 		Json::Reader reader;
 		if (arg1.data()[0] == '@'){
-			arg1 = Variable[arg1.substr(1, arg1.size())];
+			arg1 = GetVar(arg1.substr(1, arg1.size()));
 		}
 		reader.parse(arg1, ViewBag);
 	};
@@ -491,17 +565,17 @@ void CppHtmlVM::InitExeContainer()
 	{
 		arg1 = arg1.substr(1, arg1.size());
 		if (arg2.data()[0] == '@'){
-			arg2 = Variable[arg2.substr(1, arg2.size())];
+			arg2 = GetVar(arg2.substr(1, arg2.size()));
 		}
 		if (arg3.data()[0] == '@'){
-			arg3 = Variable[arg3.substr(1, arg3.size())];
+			arg2 = GetVar(arg3.substr(1, arg3.size()));
 		}
 		else{
 			arg3 = arg3.substr(1, arg3.size() - 2);
 		}
 
 		int index = atoi(arg2.data());
-		Variable[arg1] = ViewBag[index][arg3].asString();
+		SetVar(arg1, ViewBag[index][arg3].asString());
 	};
 
 	/*for循环*/
@@ -509,12 +583,12 @@ void CppHtmlVM::InitExeContainer()
 	{
 		string var = arg1;
 		string step = arg3;
-		arg1 = Variable[arg1.substr(1, arg1.size())];
+		arg1 = GetVar(arg1.substr(1, arg1.size()));
 		if (arg2.data()[0] == '@'){
-			arg2 = Variable[arg2.substr(1, arg2.size())];
+			arg2 = GetVar(arg2.substr(1, arg2.size()));
 		}
 		if (arg3.data()[0] == '@'){
-			arg3 = Variable[arg3.substr(1, arg3.size())];
+			arg3 = GetVar(arg3.substr(1, arg3.size()));
 		}
 		double nu1 = atof(arg1.data());
 		double nu2 = atof(arg2.data());
@@ -549,23 +623,27 @@ void CppHtmlVM::InitExeContainer()
 			}
 		}
 	};
+	/*for结束*/
 	ExeList["rof"] = command()
 	{
 		PC = SP.back();
 		SP.pop_back();
-		arg1 = Variable[PC.var.substr(1, PC.var.size())];
+		arg1 = GetVar(PC.var.substr(1, PC.var.size()));
 		arg2 = PC.step;
 		if (arg2.data()[0] == '@'){
-			arg2 = Variable[arg2.substr(1, arg2.size())];
+			arg2 = GetVar(arg2.substr(1, arg2.size()));
 		}
 		double nu1 = atof(arg1.data());
 		double nu2 = atof(arg2.data());
 		stringstream ss;
+		string res;
 		ss << (nu1 + nu2);
-		ss >> Variable[PC.var.substr(1, PC.var.size())];
+		ss >> res;
+		SetVar(PC.var.substr(1, PC.var.size()), res);
 		PC.step.clear();
 		PC.var.clear();
 	};
+	/*跳出循环*/
 	ExeList["break"] = command()
 	{
 		for (int index = PC.line;; index++){
@@ -575,18 +653,20 @@ void CppHtmlVM::InitExeContainer()
 			}
 		}
 	};
+	/*继续循环*/
 	ExeList["continue"] = command()
 	{
 		ExeList["rof"]("0", "0", "0");
 	};
+	/*条件判断*/
 	ExeList["if"] = command()
 	{
 		explain(arg1, arg2, arg3);
 		if (arg1.data()[0] == '@'){
-			arg1 = Variable[arg1.substr(1, arg1.size())];
+			arg1 = GetVar(arg1.substr(1, arg1.size()));
 		}
 		if (arg3.data()[0] == '@'){
-			arg3 = Variable[arg3.substr(1, arg3.size())];
+			arg3 = GetVar(arg3.substr(1, arg3.size()));
 		}
 
 		ExeList["cmp"](arg1, arg3, "0");

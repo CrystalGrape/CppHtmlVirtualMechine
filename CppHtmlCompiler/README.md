@@ -31,6 +31,7 @@ CppHtmlVirtualMechine是一款基于C++的汇编风格的脚本语言
 		rof 循环结束  
 		break 跳出循环  
 		continue 重新循环  
+		local 设置局部变量 用法与set类似
 #cpphtml介绍
 cpphtml 语言必须包含在<?cpp和?>中，否则翻译器不会解析  
 定义一个变量:cpphtml没有变量类型，所有变量都是全局变量，全局可用  

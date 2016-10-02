@@ -1,19 +1,15 @@
 <html>
 <?cpp
-	
-	if 10>1
-		echo "1"
-		if 20<10
-			echo "2"
-		else
-			echo "3"
-		fi
-	else
-		echo "4"
-	fi
+	function test:
+		local @i,20
+		echo "want i is @{i}"
+		free @i
+		echo "want i is @{i}"
+	end
 	set @i,0
 	for @i,10,1
 		echo @i
 	rof
+	call test
 ?>
 </html>
