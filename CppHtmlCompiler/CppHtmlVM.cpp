@@ -1,4 +1,5 @@
 #include "CppHtmlVM.h"
+#include "lib\Calculator.h"
 #include <sstream>
 #include <regex>
 #include "json\json.h"
@@ -360,7 +361,11 @@ void CppHtmlVM::InitExeContainer()
 				else
 					expr += arg2[i];
 			}
-			arg2 = calculate(expr);
+			Calc calc;
+			calc.Input(expr.data());
+			calc.Cac();
+			arg2 = calc.Output();
+			//arg2 = calculate(expr);
 		}
 		Variable[arg1] = arg2;
 	};
@@ -400,7 +405,11 @@ void CppHtmlVM::InitExeContainer()
 				else
 					expr += arg2[i];
 			}
-			arg2 = calculate(expr);
+			Calc calc;
+			calc.Input(expr.data());
+			calc.Cac();
+			arg2 = calc.Output();
+			//arg2 = calculate(expr);
 		}
 		LocalVariable[PC.function][arg1] = arg2;
 	};

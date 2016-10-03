@@ -19,6 +19,12 @@
     <Filter Include="源文件\json">
       <UniqueIdentifier>{00aba738-f0a7-47e8-b7ee-c032c2a2bca5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\lib">
+      <UniqueIdentifier>{e65c83e4-fc50-42ad-8280-3e47dd44f1c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\lib">
+      <UniqueIdentifier>{067bfb09-a049-4b84-b988-35266496ce07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -41,6 +47,9 @@
     </ClCompile>
     <ClCompile Include="json\json_writer.cpp">
       <Filter>源文件\json</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\Calculator.cpp">
+      <Filter>源文件\lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="json\writer.h">
       <Filter>头文件\json</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Calculator.h">
+      <Filter>头文件\lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
