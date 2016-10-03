@@ -6,6 +6,7 @@
 #include <map>
 #include <list>
 #include <vector>
+#include <fstream>
 typedef void (*CExecute)(std::string arg1, std::string arg2, std::string arg3);
 typedef std::map<std::string, CExecute> ExeContainer;
 class ISourceCodeLine
@@ -25,6 +26,7 @@ public:
 	{
 		if (con.find(opcode) == con.end())
 			return;
+		//std::cout<<">>>"<<opcode<<" "<<arg1<<","<<arg2<<","<<arg3<<std::endl;
 		con[opcode](arg1, arg2, arg3);
 	}
 	bool IsFor()

@@ -22,7 +22,7 @@ int main(int argc,char **argv)
 CHCExpection CompilerCH(string srcName)
 {
 	
-	ifstream srcfile(srcName);
+	ifstream srcfile(srcName.data());
 	if (!srcfile.is_open()){
 		return new CppHtmlCompilerExpection(Failed, "can't open source file");
 	}

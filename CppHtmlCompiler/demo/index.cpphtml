@@ -1,15 +1,19 @@
 <html>
-<?cpp
-	function test:
-		local @i,20
-		echo "want i is @{i}"
-		free @i
-		echo "want i is @{i}"
-	end
-	set @i,0
-	for @i,10,1
-		echo @i
-	rof
-	call test
-?>
+<body>
+	<table>
+	<?cpp
+		setview @a
+		local @index,0
+		for @index,2,1
+			local @res,0
+			echo "<tr>"
+			readview @res,@index,"name"
+			echo "<td>@{res}</td>"
+			readview @res.@index,"age"
+			echo "<td>@{res}</td>"
+			echo "</tr>"
+		rof
+	?>
+	</table>
+</body>
 </html>
