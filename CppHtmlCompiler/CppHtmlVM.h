@@ -1,4 +1,7 @@
 #pragma once
+/*
+	cpphtmlĞéÄâ»ú
+*/
 #include "ISourceCodeLine.h"
 #include "CppHtmlExpection.h"
 #define command() [](std::string arg1,std::string arg2,std::string arg3)

@@ -1,5 +1,9 @@
 #ifndef calculator_h
 #define calculator_h
+/*
+* 计算器类定义
+* 引用自：http://www.cnblogs.com/lxglbk/archive/2012/10/09/2716005.html
+*/
 #include <string.h>
 #include <cstdio>
 #include <iostream>

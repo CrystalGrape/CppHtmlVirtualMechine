@@ -1,4 +1,7 @@
 #pragma once
+/*
+*	异常返回类型
+*/
 #include <iostream>
 #include <fstream>
 namespace std

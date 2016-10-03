@@ -1,5 +1,5 @@
 /*
-*	源代码行基类
+*	源代码行类
 */
 #pragma once
 #include <iostream>
