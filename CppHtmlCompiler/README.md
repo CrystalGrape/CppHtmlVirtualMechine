@@ -1,69 +1,69 @@
-CppHtmlVirtualMechineÊÇÒ»¿î»ùÓÚC++µÄ»ã±à·ç¸ñµÄ½Å±¾ÓïÑÔ  
-#Ê¹ÓÃ·½·¨  
-ÔÚVS2013ÖÐ±àÒë£¬Éú³ÉCppHtmlCompiler.exeµÄ¿ÉÖ´ÐÐÎÄ¼þ,±¾    
-³ÌÐòÓÐÁ½ÖÖÖ´ÐÐ·½Ê½£¬ÃüÁîÐÐÄ£Ê½ºÍ½Å±¾Ä£Ê½  
-##ÃüÁîÐÐÄ£Ê½  
-¿ÉÒÔÖ±½ÓÔËÐÐCppHtmlCompiler.exe,±ã¿ÉÒÔ¿ªÊ¼ÊäÈëÃüÁî  
-### Èç 
+CppHtmlVirtualMechineæ˜¯ä¸€æ¬¾åŸºäºŽC++çš„æ±‡ç¼–é£Žæ ¼çš„è„šæœ¬è¯­è¨€  
+#ä½¿ç”¨æ–¹æ³•  
+åœ¨VS2013ä¸­ç¼–è¯‘ï¼Œç”ŸæˆCppHtmlCompiler.exeçš„å¯æ‰§è¡Œæ–‡ä»¶,æœ¬    
+ç¨‹åºæœ‰ä¸¤ç§æ‰§è¡Œæ–¹å¼ï¼Œå‘½ä»¤è¡Œæ¨¡å¼å’Œè„šæœ¬æ¨¡å¼  
+##å‘½ä»¤è¡Œæ¨¡å¼  
+å¯ä»¥ç›´æŽ¥è¿è¡ŒCppHtmlCompiler.exe,ä¾¿å¯ä»¥å¼€å§‹è¾“å…¥å‘½ä»¤  
+#### å¦‚ 
 		echo "Hello World!"  
-##½Å±¾Ä£Ê½  
-Í¨¹ýÃüÁîÐÐ´«Èë²ÎÊýµÄ·½Ê½Ö´ÐÐcpphtml¸ñÊ½µÄ½Å±¾  
-#ÃüÁî½éÉÜ  
-		halt Í£»úÃüÁî Ê¹ÓÃ·½Ê½:halt  
-		set ÉèÖÃ±äÁ¿ÃüÁî Ê¹ÓÃ·½Ê½:set @var,[@var,"str",num,expr:@a+@b]  
-		function º¯Êý¶¨Òå Ê¹ÓÃ·½Ê½£ºfunction functionname:  
-		call º¯Êýµ÷ÓÃ Ê¹ÓÃ·½Ê½:call functionname  
-		end º¯Êý½áÊøÃüÁî Ê¹ÓÃ·½Ê½:end  
-		looper Ñ­»·±êÖ¾ Ê¹ÓÃ·½Ê½:looper  
-		back Ìø×ªÃüÁî ¸ù¾ÝÇ°Ò»¸ö±È½ÏµÄ×´Ì¬Ìø×ªµ½Ö¸¶¨Î»ÖÃ Ê¹ÓÃ·½Ê½£ºback mt,eq,lt  
-		cmp ±È½ÏÃüÁî Ê¹ÓÃ·½Ê½:cmp [@var,"str",num],[@var,"str",num]  
-		echo Êä³öÃüÁî Ê¹ÓÃ·½Ê½:echo ["str",@var,"str@{var}"]  
-		free ÊÍ·Å±äÁ¿ÃüÁî Ê¹ÓÃ·½Ê½:free @var  
-		###1.0ÐÂ¼ÓÈëÌØÐÔ
-		#import Ä£¿éµ¼Èë  
-		sysvar ÉèÖÃÊÓÍ¼±äÁ¿  
-		setview Ñ¡ÔñÊÓÍ¼  
-		readview ¶ÁÈ¡ÊÓÍ¼  
-		if Ìõ¼þ¿ØÖÆ  
-		else Ìõ¼þ×ªÕÛ  
-		fi Ìõ¼þ¿ØÖÆ¿é½áÊø  
-		for Ñ­»·  
-		rof Ñ­»·½áÊø  
-		break Ìø³öÑ­»·  
-		continue ÖØÐÂÑ­»·  
-		local ÉèÖÃ¾Ö²¿±äÁ¿ ÓÃ·¨ÓësetÀàËÆ
-#cpphtml½éÉÜ
-cpphtml ÓïÑÔ±ØÐë°üº¬ÔÚ<?cppºÍ?>ÖÐ£¬·ñÔò·­ÒëÆ÷²»»á½âÎö  
-¶¨ÒåÒ»¸ö±äÁ¿:cpphtmlÃ»ÓÐ±äÁ¿ÀàÐÍ£¬ËùÓÐ±äÁ¿¶¼ÊÇÈ«¾Ö±äÁ¿£¬È«¾Ö¿ÉÓÃ  
-##¶¨Òå±äÁ¿·½Ê½£º  
-×î¼òµ¥µÄÐÎÊ½:set @a,10,¶¨ÒåÁË±äÁ¿a£¬²¢³õÊ¼»¯Îª10  
-±äÁ¿³õÊ¼»¯±äÁ¿:set @b,@a,¶¨ÒåÁË±äÁ¿b£¬²¢³õÊ¼»¯Îª±äÁ¿aµÄÖµ  
-ÔËËã±í´ïÊ½£ºset @a,expr:@a+10,Õâ¸ö±í´ïÊ½¼È¿ÉÒÔ³õÊ¼»¯±äÁ¿£¬ÓÖ¿ÉÒÔ¶Ô±äÁ¿  
-µÄÖµ½øÐÐÐÞ¸Ä£¬ÈçÉÏ¾ÍÊÇ½«aµÄÖµ¼Ó10£¬ÔÚsetµÚ¶þ¸ö²ÎÊýÖÐÈç¹ûÊÇexpr:¿ªÍ·£¬ÄÇ¸öÕâ¸ö  
-±í´ïÊ½½«±»ÊÓÎªÒ»¸öÔËËã±í´ïÊ½¡£
-##º¯Êý£º  
-º¯ÊýÊ¹ÓÃ¹Ø¼ü×Öfunction¶¨Òå£¬ÒÔend½áÊø¡£×¢Òâ£¬º¯Êý½áÎ²±ØÐëÊÇend£¬·ñÔò²»»á·µ»Ø£¬  
-»¹¿ÉÄÜÔì³ÉÎ»ÖÃ´íÎó¡£Àý£º
-### º¯Êý¶¨Òå  
+##è„šæœ¬æ¨¡å¼  
+é€šè¿‡å‘½ä»¤è¡Œä¼ å…¥å‚æ•°çš„æ–¹å¼æ‰§è¡Œcpphtmlæ ¼å¼çš„è„šæœ¬  
+### å‘½ä»¤ä»‹ç»  
+		halt åœæœºå‘½ä»¤ ä½¿ç”¨æ–¹å¼:halt  
+		set è®¾ç½®å˜é‡å‘½ä»¤ ä½¿ç”¨æ–¹å¼:set @var,[@var,"str",num,expr:@a+@b]  
+		function å‡½æ•°å®šä¹‰ ä½¿ç”¨æ–¹å¼ï¼šfunction functionname:  
+		call å‡½æ•°è°ƒç”¨ ä½¿ç”¨æ–¹å¼:call functionname  
+		end å‡½æ•°ç»“æŸå‘½ä»¤ ä½¿ç”¨æ–¹å¼:end  
+		looper å¾ªçŽ¯æ ‡å¿— ä½¿ç”¨æ–¹å¼:looper  
+		back è·³è½¬å‘½ä»¤ æ ¹æ®å‰ä¸€ä¸ªæ¯”è¾ƒçš„çŠ¶æ€è·³è½¬åˆ°æŒ‡å®šä½ç½® ä½¿ç”¨æ–¹å¼ï¼šback mt,eq,lt  
+		cmp æ¯”è¾ƒå‘½ä»¤ ä½¿ç”¨æ–¹å¼:cmp [@var,"str",num],[@var,"str",num]  
+		echo è¾“å‡ºå‘½ä»¤ ä½¿ç”¨æ–¹å¼:echo ["str",@var,"str@{var}"]  
+		free é‡Šæ”¾å˜é‡å‘½ä»¤ ä½¿ç”¨æ–¹å¼:free @var  
+###1.0æ–°åŠ å…¥ç‰¹æ€§
+#### import æ¨¡å—å¯¼å…¥  
+		sysvar è®¾ç½®è§†å›¾å˜é‡  
+		setview é€‰æ‹©è§†å›¾  
+		readview è¯»å–è§†å›¾  
+		if æ¡ä»¶æŽ§åˆ¶  
+		else æ¡ä»¶è½¬æŠ˜  
+		fi æ¡ä»¶æŽ§åˆ¶å—ç»“æŸ  
+		for å¾ªçŽ¯  
+		rof å¾ªçŽ¯ç»“æŸ  
+		break è·³å‡ºå¾ªçŽ¯  
+		continue é‡æ–°å¾ªçŽ¯  
+		local è®¾ç½®å±€éƒ¨å˜é‡ ç”¨æ³•ä¸Žsetç±»ä¼¼
+#cpphtmlä»‹ç»
+cpphtml è¯­è¨€å¿…é¡»åŒ…å«åœ¨<?cppå’Œ?>ä¸­ï¼Œå¦åˆ™ç¿»è¯‘å™¨ä¸ä¼šè§£æž  
+å®šä¹‰ä¸€ä¸ªå˜é‡:cpphtmlæ²¡æœ‰å˜é‡ç±»åž‹ï¼Œæ‰€æœ‰å˜é‡éƒ½æ˜¯å…¨å±€å˜é‡ï¼Œå…¨å±€å¯ç”¨  
+##å®šä¹‰å˜é‡æ–¹å¼ï¼š  
+æœ€ç®€å•çš„å½¢å¼:set @a,10,å®šä¹‰äº†å˜é‡aï¼Œå¹¶åˆå§‹åŒ–ä¸º10  
+å˜é‡åˆå§‹åŒ–å˜é‡:set @b,@a,å®šä¹‰äº†å˜é‡bï¼Œå¹¶åˆå§‹åŒ–ä¸ºå˜é‡açš„å€¼  
+è¿ç®—è¡¨è¾¾å¼ï¼šset @a,expr:@a+10,è¿™ä¸ªè¡¨è¾¾å¼æ—¢å¯ä»¥åˆå§‹åŒ–å˜é‡ï¼Œåˆå¯ä»¥å¯¹å˜é‡  
+çš„å€¼è¿›è¡Œä¿®æ”¹ï¼Œå¦‚ä¸Šå°±æ˜¯å°†açš„å€¼åŠ 10ï¼Œåœ¨setç¬¬äºŒä¸ªå‚æ•°ä¸­å¦‚æžœæ˜¯expr:å¼€å¤´ï¼Œé‚£ä¸ªè¿™ä¸ª  
+è¡¨è¾¾å¼å°†è¢«è§†ä¸ºä¸€ä¸ªè¿ç®—è¡¨è¾¾å¼ã€‚
+##å‡½æ•°ï¼š  
+å‡½æ•°ä½¿ç”¨å…³é”®å­—functionå®šä¹‰ï¼Œä»¥endç»“æŸã€‚æ³¨æ„ï¼Œå‡½æ•°ç»“å°¾å¿…é¡»æ˜¯endï¼Œå¦åˆ™ä¸ä¼šè¿”å›žï¼Œ  
+è¿˜å¯èƒ½é€ æˆä½ç½®é”™è¯¯ã€‚ä¾‹ï¼š
+### å‡½æ•°å®šä¹‰  
 		function example:  
 			set @a,100  
 			set @b,200  
 			set @c,expr:@a+@b  
 			end  
-º¯ÊýÊ¹ÓÃcall¹Ø¼ü×Öµ÷ÓÃ  
-### º¯Êýµ÷ÓÃ
+å‡½æ•°ä½¿ç”¨callå…³é”®å­—è°ƒç”¨  
+### å‡½æ•°è°ƒç”¨
 		call example  
-## Ñ­»·:  
-Ñ­»·Ê¹ÓÃ¹Ø¼ü×Ölooper¶¨Òå,½áºÏcmpºÍback¿ÉÒÔÊµÏÖÁ÷³Ì¿ØÖÆ,±ÈÈç£º  
-### Ñ­»·  
+## å¾ªçŽ¯:  
+å¾ªçŽ¯ä½¿ç”¨å…³é”®å­—looperå®šä¹‰,ç»“åˆcmpå’Œbackå¯ä»¥å®žçŽ°æµç¨‹æŽ§åˆ¶,æ¯”å¦‚ï¼š  
+### å¾ªçŽ¯  
 		set @i,0
 		looper
 			echo "loop:@{i}"
 			set @i,expr:@i+1
 			cmp @i,10
 			back next,next,looper
-ÉÏÊö´úÂëÊµÏÖÁËÊä³ö0µ½9µÄÄ¿µÄ  
-### Ñ­»·Ç¶Ì×
+ä¸Šè¿°ä»£ç å®žçŽ°äº†è¾“å‡º0åˆ°9çš„ç›®çš„  
+### å¾ªçŽ¯åµŒå¥—
 		set @j,0
 		looper
 			echo "out loop:@{j}"
@@ -75,34 +75,34 @@ cpphtml ÓïÑÔ±ØÐë°üº¬ÔÚ<?cppºÍ?>ÖÐ£¬·ñÔò·­ÒëÆ÷²»»á½âÎö
 				back next,next,looper
 			set @j,expr:@j+1
 			back next,next,looper
-# °æ±¾1.0  
-###°æ±¾ËµÃ÷  
-Ôö¼ÓÒ»ÏµÁÐÐÂÌØÐÔ£ºÒýÓÃÄ£¿é¡¢ÊÓÍ¼±äÁ¿¡¢forÑ­»·¡¢ifÌõ¼þÅÐ¶Ï  
-### ÒýÓÃÄ£¿é  
-Ôö¼ÓÁËÄ£¿éÒýÓÃÌØÐÔ£¬ÀûÓÃ¹Ø¼ü×Ö#importµ¼ÈëÐèÒªÒýÓÃµÄÄ£¿é£¬Ä£¿é±£´æÔÚÒ»ºó×ºÃû  
-ÎªchmoduleµÄÎÄ¼þÖÐ£¬Ä£¿éµÄÉùÃ÷²»ÐèÒª°üº¬ÔÚ<?cppºÍ?>¿éÖÐ¡£  
-ÉùÃ÷Ò»¸ötestÄ£¿é£¬±£´æÎªtest.chmodule  
-### test.chmodule 
+# ç‰ˆæœ¬1.0  
+###ç‰ˆæœ¬è¯´æ˜Ž  
+å¢žåŠ ä¸€ç³»åˆ—æ–°ç‰¹æ€§ï¼šå¼•ç”¨æ¨¡å—ã€è§†å›¾å˜é‡ã€forå¾ªçŽ¯ã€ifæ¡ä»¶åˆ¤æ–­  
+### å¼•ç”¨æ¨¡å—  
+å¢žåŠ äº†æ¨¡å—å¼•ç”¨ç‰¹æ€§ï¼Œåˆ©ç”¨å…³é”®å­—#importå¯¼å…¥éœ€è¦å¼•ç”¨çš„æ¨¡å—ï¼Œæ¨¡å—ä¿å­˜åœ¨ä¸€åŽç¼€å  
+ä¸ºchmoduleçš„æ–‡ä»¶ä¸­ï¼Œæ¨¡å—çš„å£°æ˜Žä¸éœ€è¦åŒ…å«åœ¨<?cppå’Œ?>å—ä¸­ã€‚  
+å£°æ˜Žä¸€ä¸ªtestæ¨¡å—ï¼Œä¿å­˜ä¸ºtest.chmodule  
+#### test.chmodule 
 		function testfunc:  
 			echo "this is test"  
 			set @return,expr:@arg1+@arg2  
 		end  
-### ÒýÓÃÊ±Ê¹ÓÃ  
+#### å¼•ç”¨æ—¶ä½¿ç”¨  
 		#import test  
-µ±½âÊÍÆ÷¼ÓÔØ´úÂë¹ý³ÌÖÐÓöµ½Õâ¶Î´úÂë»á×Ô¶¯ÔÚµ±Ç°Ä¿Â¼²éÕÒµ½test.chmoduleÎÄ¼þ£¬²¢¼ÓÔØ½ø  
-µ±Ç°ÎÄ¼þÖÐ¡£
-### ÊÓÍ¼±äÁ¿  
-ÊÓÍ¼±äÁ¿ÊÇÒ»¸öjsonÊý×é£¬Ò»°ãÓÃÓÚ¿ØÖÆÆ÷ÏòÊÓÍ¼´«µÝÄ£ÐÍ²ÎÊý£¬Ïà¹ØÃüÁîÓÐÈý¸ösysvar¡¢setview¡¢  
-readview¡£  
-sysvarÓÃÓÚÉùÃ÷²¢¸³ÖµÒ»¸öÊÓÍ¼±äÁ¿  
-setviewÓÃÓÚÑ¡Ôñ½ÓÏÂÀ´ÒªÊ¹ÓÃµÄÊÓÍ¼±äÁ¿  
-readviewÓÃÓÚ¶ÁÈ¡ÊÓÍ¼ÖÐµÄÊý¾ÝµÚÒ»¸ö²ÎÊý´æ·Å½á¹û£¬µÚ¶þ¸ö²ÎÊýÊÇÊý×éÏÂ±ê£¬µÚÈý¸öÊý×éÓÃÓÚÖ¸¶¨  
-ÐèÒª¶ÁÈ¡µÄ×Ö¶ÎÃû  
-### Àý£º  
+å½“è§£é‡Šå™¨åŠ è½½ä»£ç è¿‡ç¨‹ä¸­é‡åˆ°è¿™æ®µä»£ç ä¼šè‡ªåŠ¨åœ¨å½“å‰ç›®å½•æŸ¥æ‰¾åˆ°test.chmoduleæ–‡ä»¶ï¼Œå¹¶åŠ è½½è¿›  
+å½“å‰æ–‡ä»¶ä¸­ã€‚
+### è§†å›¾å˜é‡  
+è§†å›¾å˜é‡æ˜¯ä¸€ä¸ªjsonæ•°ç»„ï¼Œä¸€èˆ¬ç”¨äºŽæŽ§åˆ¶å™¨å‘è§†å›¾ä¼ é€’æ¨¡åž‹å‚æ•°ï¼Œç›¸å…³å‘½ä»¤æœ‰ä¸‰ä¸ªsysvarã€setviewã€  
+readviewã€‚  
+sysvarç”¨äºŽå£°æ˜Žå¹¶èµ‹å€¼ä¸€ä¸ªè§†å›¾å˜é‡  
+setviewç”¨äºŽé€‰æ‹©æŽ¥ä¸‹æ¥è¦ä½¿ç”¨çš„è§†å›¾å˜é‡  
+readviewç”¨äºŽè¯»å–è§†å›¾ä¸­çš„æ•°æ®ç¬¬ä¸€ä¸ªå‚æ•°å­˜æ”¾ç»“æžœï¼Œç¬¬äºŒä¸ªå‚æ•°æ˜¯æ•°ç»„ä¸‹æ ‡ï¼Œç¬¬ä¸‰ä¸ªæ•°ç»„ç”¨äºŽæŒ‡å®š  
+éœ€è¦è¯»å–çš„å­—æ®µå  
+### ä¾‹ï¼š  
 		sysvar @a,[{"name":"aaaa","age":21},{"name":"bbb","age":22}]  
 		setview @a  
 		readview @name,@index,"name"  
-### ifÌõ¼þ¿ØÖÆ    
+### ifæ¡ä»¶æŽ§åˆ¶    
 		if 10>1  
 			echo "1"  
 			if 20<10  
@@ -113,13 +113,13 @@ readviewÓÃÓÚ¶ÁÈ¡ÊÓÍ¼ÖÐµÄÊý¾ÝµÚÒ»¸ö²ÎÊý´æ·Å½á¹û£¬µÚ¶þ¸ö²ÎÊýÊÇÊý×éÏÂ±ê£¬µÚÈý¸öÊý×é
 		else  
 			echo "4"  
 		fi  
-ÉÏÊö´úÂëÊÇÒ»¸öifÇ¶Ì×
-### forÑ­»·¿ØÖÆ
-Ä¿Ç°forÑ­»·²»Ö§³Ö¸´ÔÓÅÐ¶Ï£¬forÑ­»·²ÎÊýÓÐÈý¸ö£º  
-²ÎÊýÒ»£ºË÷Òý±äÁ¿  
-²ÎÊý¶þ£ºÍË³öÌõ¼þ  
-²ÎÊýÈý£º²½³¤  
-### Àý×Ó£º
+ä¸Šè¿°ä»£ç æ˜¯ä¸€ä¸ªifåµŒå¥—
+### forå¾ªçŽ¯æŽ§åˆ¶
+ç›®å‰forå¾ªçŽ¯ä¸æ”¯æŒå¤æ‚åˆ¤æ–­ï¼Œforå¾ªçŽ¯å‚æ•°æœ‰ä¸‰ä¸ªï¼š  
+å‚æ•°ä¸€ï¼šç´¢å¼•å˜é‡  
+å‚æ•°äºŒï¼šé€€å‡ºæ¡ä»¶  
+å‚æ•°ä¸‰ï¼šæ­¥é•¿  
+### ä¾‹å­ï¼š
 		for @i,10,1
 			echo @i
 			if @i>5
@@ -128,5 +128,5 @@ readviewÓÃÓÚ¶ÁÈ¡ÊÓÍ¼ÖÐµÄÊý¾ÝµÚÒ»¸ö²ÎÊý´æ·Å½á¹û£¬µÚ¶þ¸ö²ÎÊýÊÇÊý×éÏÂ±ê£¬µÚÈý¸öÊý×é
 				break
 			fi
 		rof
-ÉÏÊö´úÂë£¬ÏÈÅÐ¶Ï±äÁ¿iÊÇ·ñµÈÓÚ10£¬µÈÓÚÍË³öÑ­»·£¬²»µÈÓÚ½øÈëÑ­»·¡£  
-Ã¿´ÎÑ­»·½áÊøi¼ÓÒ»  
+ä¸Šè¿°ä»£ç ï¼Œå…ˆåˆ¤æ–­å˜é‡iæ˜¯å¦ç­‰äºŽ10ï¼Œç­‰äºŽé€€å‡ºå¾ªçŽ¯ï¼Œä¸ç­‰äºŽè¿›å…¥å¾ªçŽ¯ã€‚  
+æ¯æ¬¡å¾ªçŽ¯ç»“æŸiåŠ ä¸€  
