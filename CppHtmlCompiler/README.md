@@ -20,7 +20,7 @@ CppHtmlVirtualMechine是一款基于C++的汇编风格的脚本语言
 		echo 输出命令 使用方式:echo ["str",@var,"str@{var}"]  
 		free 释放变量命令 使用方式:free @var  
 ###1.0新加入特性
-#### import 模块导入  
+		import 模块导入  
 		sysvar 设置视图变量  
 		setview 选择视图  
 		readview 读取视图  
