@@ -1,2 +1,1 @@
-#import test
 sysvar @a,[{"name":"aaaa","age":21},{"name":"bbb","age":22}]

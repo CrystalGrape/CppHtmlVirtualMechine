@@ -77,6 +77,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="demo\index.cpphtml" />
+    <None Include="demo\sysvar.chmodule" />
+    <None Include="demo\test.chmodule" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

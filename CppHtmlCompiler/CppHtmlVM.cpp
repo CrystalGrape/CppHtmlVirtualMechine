@@ -1,7 +1,7 @@
 #include "CppHtmlVM.h"
 #include "lib\Calculator.h"
 #include <sstream>
-#include <regex>
+#include <queue>
 #include "json\json.h"
 using namespace std;
 //运行模式
@@ -21,7 +21,9 @@ static vector<ProgramCounter> SP;
 //变量区 
 static map<string, string>  Variable;		
 //局部变量区
-static map<string, map<string, string>> LocalVariable;	
+static vector<map<string, string>>::iterator CurrentStack;
+//局部变量堆栈(v2.0)
+static vector<map<string, string>> LocalVariableStack;
 //溢出标志位
 static char OverLoad;		
 //当前视图包
@@ -37,7 +39,9 @@ CppHtmlVM::CppHtmlVM(RunMode runMode)
 	SysMode = runMode;
 	vmState = Running;
 	InitStateMechine();
-	InitExeContainer();
+	if (ExeList.size() == 0){
+		InitExeContainer();
+	}
 }
 
 /*初始化状态机*/
@@ -68,7 +72,8 @@ void CppHtmlVM::FreeResource()
 	LoadFuncName = "_entry";
 	SP.clear();
 	Variable.clear();
-	LocalVariable.clear();
+	LocalVariableStack.clear();
+	//LocalVariable.clear();
 }
 
 /*取出空格和制表符*/
@@ -169,9 +174,12 @@ CHCExpection CppHtmlVM::Run()
 		return new CppHtmlCompilerExpection(Failed, "can't find entry of script");
 	if (SysMode == File){
 		PC.function = "_entry";
-		PC.line = 0;
+		PC.line = 0;	
 	}
 	vmState = Running;
+	map<string, string> tmp;
+	LocalVariableStack.push_back(tmp);
+	CurrentStack = LocalVariableStack.end() - 1;
 	while (1){
 		CHCExpection e = stateMechine[vmState]();
 		if (e->ErrorCode != Success){
@@ -304,16 +312,16 @@ void explain(string &arg1, string &arg2, string &arg3)
 
 string GetVar(string var)
 {
-	if (LocalVariable[PC.function].find(var) != LocalVariable[PC.function].end())
-		return LocalVariable[PC.function][var];
+	if (CurrentStack->find(var) != CurrentStack->end())
+		return (*CurrentStack)[var];
 	else
 		return Variable[var];
 }
 
 void SetVar(string var, string value)
 {
-	if (LocalVariable[PC.function].find(var) != LocalVariable[PC.function].end())
-		LocalVariable[PC.function][var] = value;
+	if (CurrentStack->find(var) != CurrentStack->end())
+		(*CurrentStack)[var] = value;
 	else
 		Variable[var] = value;
 }
@@ -409,26 +417,32 @@ void CppHtmlVM::InitExeContainer()
 			calc.Input(expr.data());
 			calc.Cac();
 			arg2 = calc.Output();
-			//arg2 = calculate(expr);
 		}
-		LocalVariable[PC.function][arg1] = arg2;
+		(*CurrentStack)[arg1] = arg2;
 	};
 
 	/*函数调用命令*/
 	ExeList["call"] = command()
 	{
+		if (arg1.data()[0] == '@'){
+			arg1 = GetVar(arg1.substr(1, arg1.size()));
+		}
 		if (FuncList.find(arg1) == FuncList.end())
 			return;
 		SP.push_back(PC);
 		PC.function = arg1;
 		PC.line = 0;
+		map<string, string> tmp;
+		LocalVariableStack.push_back(tmp);
+		CurrentStack = LocalVariableStack.end() - 1;
 	};
 
 	/*函数结束命令*/
 	ExeList["end"] = command()
 	{
 		//清除局部变量
-		LocalVariable[PC.function].clear();
+		LocalVariableStack.pop_back();
+		CurrentStack = LocalVariableStack.end() - 1;
 		PC = SP.back();
 		SP.pop_back();
 	};
@@ -548,9 +562,9 @@ void CppHtmlVM::InitExeContainer()
 		if (arg1.data()[0] != '@')
 			return;
 		arg1 = arg1.substr(1, arg1.size());
-		if (LocalVariable[PC.function].find(arg1) != LocalVariable[PC.function].end()){
-			LocalVariable[PC.function].erase(arg1);
-			return;
+		if (CurrentStack->find(arg1) != CurrentStack->end())
+		{
+			CurrentStack->erase(arg1);
 		}
 		if (Variable.find(arg1) != Variable.end())
 			Variable.erase(arg1);

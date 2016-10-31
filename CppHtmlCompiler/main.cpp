@@ -5,17 +5,17 @@ CHCExpection CommandMode();
 CHCExpection CompilerCH(string srcName);
 int main(int argc,char **argv)
 {
-	if (argc == 1){
-		//命令行模式
-		CommandMode();
-	}
-	else{
-		//编译文件
-		string FileName = argv[1];
-		CompilerCH(FileName);
-	}
-	/*string FileName = "demo/index.cpphtml";
-	CompilerCH(FileName);*/
+	//if (argc == 1){
+	//	//命令行模式
+	//	CommandMode();
+	//}
+	//else{
+	//	//编译文件
+	//	string FileName = argv[1];
+	//	CompilerCH(FileName);
+	//}
+	string FileName = "demo/index.cpphtml";
+	CompilerCH(FileName);
 	return 0;
 }
 
@@ -27,7 +27,7 @@ CHCExpection CompilerCH(string srcName)
 		return new CppHtmlCompilerExpection(Failed, "can't open source file");
 	}
 	CppHtmlVM chv;
-	chv.LoadCHM("sysvar");
+	chv.LoadCHM("sysvar");				//加载系统变量
 	char line[8096];
 	bool isCpp = false;
 	while (!srcfile.eof()){

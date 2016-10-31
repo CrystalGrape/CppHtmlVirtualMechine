@@ -31,6 +31,12 @@
     <None Include="demo\index.cpphtml">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="demo\sysvar.chmodule">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="demo\test.chmodule">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

@@ -1,15 +1,26 @@
 <html>
 <?cpp
-	function test:
-		local @i,20
-		echo "want i is @{i}"
-		free @i
-		echo "want i is @{i}"
+	function Fibonacci:
+		echo "@{arg2}"
+		local @tmp,@arg2
+		set @arg2,expr:@arg1+@tmp
+		set @arg1,@tmp
+		free @tmp
+		if @arg2 <= 1000
+			call Fibonacci
+		fi
+	end	
+	function LocalVarible:
+		local @user,10
+		echo @user
+		set @arg1,expr:@arg1+1
+		if @arg1<=100
+			call LocalVarible
+		fi
 	end
-	set @i,0
-	for @i,10,1
-		echo @i
-	rof
-	call test
+	set @arg1,0
+	local @user,100
+	call LocalVarible
+	echo @user
 ?>
 </html>
